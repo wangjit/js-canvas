@@ -24,13 +24,15 @@
   </style>
 </head>
 <body>
- <div class = "actions">
-   <label><input type="radio" name = "penType" value = "pen" checked>笔</label>
-   <label><input type="radio" name = "penType" value = "eraser">橡皮擦</label>
+ <div class="actions">
+   <label><input type="radio" name="penType" value="pen" checked>笔</label>
+   <label><input type="radio" name="penType" value="eraser">橡皮擦</label>
+   <button id="save">保存</button>
  </div>
  <canvas id="app"></canvas>
  <script>
    let canvas = document.querySelector('#app')
+   let save = document.querySelector('#save')
    let clientWidth = document.documentElement.clientWidth
    let clientHeight = document.documentElement.clientHeight
    canvas.width = clientWidth
@@ -59,6 +61,13 @@
    canvas.addEventListener('touchend', function() {
      previousPoint = null
    })
+
+   save.onclick = function() {
+     var canvas = document.getElementById("app")
+     var data = canvas.toDataURL("image/png")
+     var newWindow = window.open('about:blank', 'image from canvas')
+     newWindow.document.write("<img src = '"+data+"' alt = 'from canvas'/>")
+   }
  </script>
 </body>
 </html>
