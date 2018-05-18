@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas手机画板</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    ul {
+      list-style: none;
+    }
+    #app {
+      background: #ddd;
+      display: block;
+    }
+    .actions {
+      position: fixed;
+    }
+  </style>
+</head>
+<body>
+ <div class = "actions">
+   <label><input type="radio" name = "penType" value = "pen" checked>笔</label>
+   <label><input type="radio" name = "penType" value = "eraser">橡皮擦</label>
+ </div>
+ <canvas id="app"></canvas>
+ <script>
+   let canvas = document.querySelector('#app')
+   let clientWidth = document.documentElement.clientWidth
+   let clientHeight = document.documentElement.clientHeight
+   canvas.width = clientWidth
+   canvas.height = clientHeight
+
+   let context = canvas.getContext("2d")
+   let previousPoint
+
+   canvas.addEventListener('touchmove', function(e) {
+     let penType = document.querySelector('input[name="penType"]:checked').value
+     let {pageX, pageY} = e.touches[0]
+     if(penType === 'pen') {
+       if(previousPoint) {
+         context.strokeStyle = 'green'
+         context.beginPath()
+         context.moveTo(previousPoint.pageX, previousPoint.pageY)
+         context.lineTo(pageX, pageY)
+         context.stroke()
+       }
+       previousPoint = { pageX, pageY }
+     }else if(penType === 'eraser') {
+       context.clearRect(pageX-5, pageY-5, 20, 20)
+     }
+     
+   })
+   canvas.addEventListener('touchend', function() {
+     previousPoint = null
+   })
+ </script>
+</body>
+</html>
